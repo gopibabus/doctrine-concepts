@@ -1,4 +1,5 @@
 ###> symfony/framework-bundle ###
+.env.local
 .env
 /public/bundles/
 /var/
@@ -13,3 +14,8 @@
 .phpunit
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> IDE ###
+.vscode
+.idea
+###< IDE ###

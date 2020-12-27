@@ -1,53 +1,33 @@
-![Doctrine Relationships](./public/images/banner.png)
+![Symfony Concepts 2](./public/images/banner.png)
 
-## Setup
+### Topics Explored
 
-If you've just downloaded the code, congratulations!!
+* Doctrine Relationships
+* Symfony Security (Authentication & Authorization)
+* Symfony Forms
+* Doctrine Queries
+* Symfony Bundle
 
-To get it working, follow these steps:
+### How to Set up and run the Application
+```bash
+# Copy Config
+# Feel free to update values in .env file as needed
+cp ./.env.dist ./.env
 
-**Download Composer dependencies**
+DATABASE_URL="mysql://root:root@127.0.0.1:3306/symfony_concepts_2"
 
-Make sure you have [Composer installed](https://getcomposer.org/download/)
-and then run:
+# Install php dependencies
+composer update
 
-```
-composer install
-```
+# Create Database
+php bin/console make:database
 
-You may alternatively need to run `php composer.phar install`, depending
-on how you installed Composer.
-
-**Configure the the .env File**
-
-First, make sure you have an `.env` file (you should).
-If you don't, copy `.env.dist` to create it.
-
-Next, look at the configuration and make any adjustments you
-need - specifically `DATABASE_URL`.
-
-**Setup the Database**
-
-Again, make sure `.env` is setup for your computer. Then, create
-the database & tables!
-
-```
-php bin/console doctrine:database:create
+# Migrate data to database
 php bin/console doctrine:migrations:migrate
+
+# Update Database with Dummy Data
 php bin/console doctrine:fixtures:load
+
+# Serve Application
+symfony server:start
 ```
-
-If you get an error that the database exists, that should
-be ok. But if you have problems, completely drop the
-database (`doctrine:database:drop --force`) and try again.
-
-**Start the built-in web server**
-
-You can use Nginx or Apache, but the built-in web server works
-great:
-
-```
-php bin/console server:run
-```
-
-Now check out the site at `http://localhost:8000`
