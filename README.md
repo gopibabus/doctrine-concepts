@@ -1,4 +1,4 @@
-![Symfony Concepts 2](./public/images/banner.png)
+![Symfony Concepts 2](./public/images/title.png)
 
 ### Topics Explored
 
