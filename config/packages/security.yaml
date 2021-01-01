@@ -1,4 +1,8 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+            
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -21,8 +25,8 @@ security:
                 path: app_logout
 
             remember_me:
-                secret: '%kernel.secret%
-                lifetime: 2592000
+                secret: '%kernel.secret%'
+                lifetime: 2592000 # 30 days in seconds
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
