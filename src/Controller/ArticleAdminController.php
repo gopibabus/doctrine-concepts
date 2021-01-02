@@ -9,13 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ADMIN")
- */
 class ArticleAdminController extends AbstractController
 {
     /**
      * @Route("/admin/article/new", name="admin_article_new")
+     * @IsGranted("ROLE_ADMIN_ARTICLE")
      */
     public function new(EntityManagerInterface $em)
     {
@@ -25,5 +23,23 @@ class ArticleAdminController extends AbstractController
             $article->getId(),
             $article->getSlug()
         ));
+    }
+
+    /**
+     * @Route("/admin/article/{id}/edit")
+     * @IsGranted("MANAGE", subject="article")
+     * @param Article $article
+     */
+    public function edit(Article $article)
+    {
+        if (!$this->isGranted('MANAGE', $article)) {
+            throw $this->createAccessDeniedException('No Access!!');
+        }
+
+        // Manually verifying the user
+        // $this->denyAccessUnlessGranted('MANAGE', $article);
+
+        //TODO: This will be replaced by Symfony Forms
+        dd($article);
     }
 }
