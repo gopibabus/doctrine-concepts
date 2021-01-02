@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class CommentAdminController
- * @package App\Controller
  * @IsGranted("ROLE_ADMIN")
  */
 class CommentAdminController extends AbstractController
