@@ -203,6 +203,15 @@
     "php-http/stopwatch-plugin": {
         "version": "1.1.0"
     },
+    "phpdocumentor/reflection-common": {
+        "version": "2.2.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "5.2.2"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.4.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -416,6 +425,9 @@
     "symfony/property-access": {
         "version": "v4.4.18"
     },
+    "symfony/property-info": {
+        "version": "v4.4.18"
+    },
     "symfony/routing": {
         "version": "4.0",
         "recipe": {
@@ -448,6 +460,12 @@
     },
     "symfony/security-http": {
         "version": "v4.4.18"
+    },
+    "symfony/serializer": {
+        "version": "v4.4.18"
+    },
+    "symfony/serializer-pack": {
+        "version": "v1.0.4"
     },
     "symfony/service-contracts": {
         "version": "v2.2.0"
@@ -523,6 +541,9 @@
     },
     "twig/twig": {
         "version": "v2.4.4"
+    },
+    "webmozart/assert": {
+        "version": "1.9.1"
     },
     "zendframework/zend-code": {
         "version": "3.3.0"
