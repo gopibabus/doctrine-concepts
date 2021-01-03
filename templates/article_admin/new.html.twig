@@ -1,0 +1,16 @@
+{% extends 'content_base.html.twig' %}
+
+{% block content_body %}
+    <h1>Launch a new Article! 🚀</h1>
+
+    {#Form Start#}
+    {{ form_start(articleForm) }}
+
+        {#Render all Form Fields#}
+        {{ form_widget(articleForm) }}
+
+        <button type="submit" class="btn btn-primary">Create</button>
+    {#Form End#}
+    {{ form_end(articleForm) }}
+
+{% endblock %}
