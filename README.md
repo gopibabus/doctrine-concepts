@@ -5,7 +5,6 @@
 * Doctrine Relationships
 * Symfony Security (Authentication & Authorization)
 * Symfony Forms
-* Doctrine Queries
 * Symfony Bundle
 
 ### How to Set up and run the Application
