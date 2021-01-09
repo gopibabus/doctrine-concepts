@@ -31,6 +31,16 @@ class ArticleFormType extends AbstractType
             ->add('publishedAt', DateType::class, [
                 'help' => 'Select date to be published'
             ])
+            ->add('author', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => function(User $user){
+                    return sprintf('(%d) %s', $user->getId(), $user->getEmail());
+                },
+                'placeholder' => 'Choose an Author',
+                'choices' => $this->userRepository->findAllEmailAlphabetical(),
+                'invalid_message' => 'Please Select valid Author to proceed..'
+            ])
+            # We are overriding above field with our custom field type
             ->add('author', UserSelectTextType::class);
     }
 
