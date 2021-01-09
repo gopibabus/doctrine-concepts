@@ -23,13 +23,17 @@ class ArticleFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var Article $article */
+        $article = $options['data'] ?? null;
+        $isEdit = $article && $article->getId();
+
         # https://symfony.com/doc/current/reference/forms/types.html
         $builder->add('title', TextType::class, [
             'help' => 'Enter title of the post'
         ])
-            ->add('content')
-            ->add('publishedAt', DateType::class, [
-                'help' => 'Select date to be published'
+            ->add('content', null, [
+                /** This is custom attribute(rows) that we set in TextAreaSizeExtension */
+                'rows' => 15
             ])
             ->add('author', EntityType::class, [
                 'class' => User::class,
@@ -41,13 +45,22 @@ class ArticleFormType extends AbstractType
                 'invalid_message' => 'Please Select valid Author to proceed..'
             ])
             # We are overriding above field with our custom field type
-            ->add('author', UserSelectTextType::class);
+            ->add('author', UserSelectTextType::class, [
+                'disabled' => $isEdit
+            ]);
+
+        if($options['include_published_at']){
+            $builder->add('publishedAt', DateType::class, [
+                'help' => 'Select date to be published'
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Article::class
+            'data_class' => Article::class,
+            'include_published_at' => false
         ]);
     }
 }
