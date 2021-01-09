@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{#This block is eleigible for overriding widgets from bootstrp form theme#}
+{% form_theme registrationForm _self %}
 
 {% block title %} Registration!{% endblock %}
 
@@ -7,11 +9,26 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 {% endblock %}
 
+{#This block is overriding form_row widget from bootstrp form theme#}
+{%- block form_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    {{- form_label(form) -}}
+    {{- form_errors(form) -}}
+    {{- form_widget(form, widget_attr) -}}
+    {{- form_help(form) -}}
+{%- endblock form_row -%}
+
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                {{ form_start(registrationForm) }}
+                {{ form_start(registrationForm, {
+                    attr: {class: 'form-signin'}
+                }) }}
+                    <h1 class="h3 mb-3 font-weight-normal">Register</h1>
                     {{ form_widget(registrationForm) }}
                     <button class="btn btn-lg btn-primary btn-block" type="submit">
                         Register
