@@ -1,13 +1,15 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
@@ -25,6 +27,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please enter the valid title!!")
      */
     private $title;
 
@@ -82,19 +85,6 @@ class Article
         return $this->id;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -150,6 +140,11 @@ class Article
         return $this;
     }
 
+    public function getImagePath()
+    {
+        return 'images/' . $this->getImageFilename();
+    }
+
     public function getImageFilename(): ?string
     {
         return $this->imageFilename;
@@ -160,11 +155,6 @@ class Article
         $this->imageFilename = $imageFilename;
 
         return $this;
-    }
-
-    public function getImagePath()
-    {
-        return 'images/'.$this->getImageFilename();
     }
 
     /**
@@ -180,7 +170,7 @@ class Article
      */
     public function GetNonDeletedComments(): Collection
     {
-       return $this->comments->matching(ArticleRepository::createNonDeletedCriteria());
+        return $this->comments->matching(ArticleRepository::createNonDeletedCriteria());
     }
 
     public function addComment(Comment $comment): self
@@ -244,5 +234,31 @@ class Article
     public function isPublished(): bool
     {
         return $this->publishedAt !== null;
+    }
+
+    /**
+     * @Assert\Callback
+     * @param ExecutionContextInterface $context
+     * @param                           $payload
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if (stripos($this->getTitle(), 'the borg') !== false) {
+            $context->buildViolation('Umm.. You should choose valid title!!')
+                ->atPath('title')
+                ->addViolation();
+        }
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }

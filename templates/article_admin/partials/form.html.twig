@@ -1,0 +1,15 @@
+{# Form Start #}
+{{ form_start(articleForm) }}
+
+    {# Render all Form Fields #}
+    {# {{ form_widget(articleForm) }} #}
+    {# Render individual Form Fields #}
+    {{ form_row(articleForm.title, {label: 'Article Title'}) }}
+    {{ form_row(articleForm.content) }}
+    {{ form_row(articleForm.publishedAt) }}
+    {{ form_row(articleForm.author) }}
+
+    <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+
+{# Form End #}
+{{ form_end(articleForm) }}

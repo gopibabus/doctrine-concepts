@@ -37,7 +37,8 @@ class ArticleFormType extends AbstractType
                     return sprintf('(%d) %s', $user->getId(), $user->getEmail());
                 },
                 'placeholder' => 'Choose an Author',
-                'choices' => $this->userRepository->findAllEmailAlphabetical()
+                'choices' => $this->userRepository->findAllEmailAlphabetical(),
+                'invalid_message' => 'Please Select valid Author to proceed..'
             ]);
     }
 

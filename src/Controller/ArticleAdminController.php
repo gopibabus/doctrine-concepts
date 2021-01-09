@@ -8,6 +8,7 @@ use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,21 +44,36 @@ class ArticleAdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/article/{id}/edit")
+     * @Route("/admin/article/{id}/edit", name="admin_article_edit")
      * @IsGranted("MANAGE", subject="article")
-     * @param Article $article
+     * @param Article                $article
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     * @return Response
      */
-    public function edit(Article $article)
+    public function edit(Article $article, Request $request, EntityManagerInterface $em): Response
     {
         if (!$this->isGranted('MANAGE', $article)) {
             throw $this->createAccessDeniedException('No Access!!');
         }
 
-        // Manually verifying the user
-        // $this->denyAccessUnlessGranted('MANAGE', $article);
+        $form = $this->createForm(ArticleFormType::class, $article);
 
-        //TODO: This will be replaced by Symfony Forms
-        dd($article);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($article);
+            $em->flush();
+
+            $this->addFlash('success', 'Article is Updated 😀');
+
+            return $this->redirectToRoute('admin_article_edit', [
+                'id' => $article->getId()
+            ]);
+        }
+
+        return $this->render('article_admin/edit.html.twig', [
+            'articleForm' => $form->createView()
+        ]);
     }
 
     /**
