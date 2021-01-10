@@ -75,7 +75,7 @@ class ArticleFormType extends AbstractType
                 return;
             }
 
-            $this->setupSepecificLocationNameField(
+            $this->setupSpecificLocationNameField(
                 $event->getForm(),
                 $data->getLocation()
             );
@@ -84,7 +84,7 @@ class ArticleFormType extends AbstractType
         $builder->get('location')
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
-                $this->setupSepecificLocationNameField(
+                $this->setupSpecificLocationNameField(
                     $form->getParent(),
                     $form->getData()
                 );
@@ -125,10 +125,10 @@ class ArticleFormType extends AbstractType
             'star' => array_combine($stars, $stars),
             'interstellar_space' => null,
         ];
-        return $locationNameChoices[$location];
+        return $locationNameChoices[$location] ?? null;
     }
 
-    private function setupSepecificLocationNameField(FormInterface $form, ?string $location)
+    private function setupSpecificLocationNameField(FormInterface $form, ?string $location)
     {
         if (null === $location) {
             $form->remove('specificLocationName');
