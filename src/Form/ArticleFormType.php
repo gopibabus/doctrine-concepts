@@ -30,7 +30,6 @@ class ArticleFormType extends AbstractType
         /** @var Article|null $article */
         $article = $options['data'] ?? null;
         $isEdit = $article && $article->getId();
-        $location = $article ? $article->getLocation() : null;
 
         # https://symfony.com/doc/current/reference/forms/types.html
         $builder->add('title', TextType::class, [
@@ -63,28 +62,32 @@ class ArticleFormType extends AbstractType
                 'required' => false
             ]);
 
-        if ($location) {
-            $builder->add('specificLocationName', ChoiceType::class, [
-                'placeholder' => 'Where exactly',
-                'choices' => $this->getLocationNameChoices($location),
-                'required' => false
-            ]);
-        }
-
-
         if ($options['include_published_at']) {
             $builder->add('publishedAt', DateType::class, [
                 'help' => 'Select date to be published'
             ]);
         }
 
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event){
+            /** @var Article|null $data */
+            $data = $event->getData();
+            if(!$data){
+                return;
+            }
+
+            $this->setupSepecificLocationNameField(
+                $event->getForm(),
+                $data->getLocation()
+            );
+        });
+
         $builder->get('location')
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-               $form = $event->getForm();
-               $this->setupSepecificLocationNameField(
-                   $form->getParent(),
-                   $form->getData()
-               );
+                $form = $event->getForm();
+                $this->setupSepecificLocationNameField(
+                    $form->getParent(),
+                    $form->getData()
+                );
             });
     }
 
@@ -127,14 +130,14 @@ class ArticleFormType extends AbstractType
 
     private function setupSepecificLocationNameField(FormInterface $form, ?string $location)
     {
-        if(null === $location){
+        if (null === $location) {
             $form->remove('specificLocationName');
 
             return;
         }
 
         $choices = $this->getLocationNameChoices($location);
-        if(null === $choices){
+        if (null === $choices) {
             $form->remove('specificLocationName');
 
             return;
