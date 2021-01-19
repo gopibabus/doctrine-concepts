@@ -11,6 +11,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,10 +86,11 @@ class SecurityController extends AbstractController
 
             /** Send an email to registered User */
             $email = (new TemplatedEmail())
-                ->from('s.gopibabu@gmail.com')
-                ->to($user->getEmail())
+                ->from(new Address('s.gopibabu@gmail.com', 'Gopibabu'))
+                ->to(new Address($user->getEmail(), 'Wonderful User'))
                 ->subject('Welcome to Spacebar')
-            ->htmlTemplate('email/welcome.html.twig');
+            ->htmlTemplate('email/welcome.html.twig')
+                ->context(['user' =>$user]);
             $mailer->send($email);
 
             /** Automatically login registered user */
