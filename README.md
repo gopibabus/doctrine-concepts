@@ -5,7 +5,7 @@
 * Doctrine Relationships
 * Symfony Security (Authentication & Authorization)
 * Symfony Forms
-* Symfony Bundle
+* Symfony Mailer(Not Swift Mailer 🙅)
 
 ### How to Set up and run the Application
 ```bash

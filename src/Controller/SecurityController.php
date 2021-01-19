@@ -10,6 +10,8 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -48,13 +50,15 @@ class SecurityController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler    $guardHandler
      * @param LoginFormAuthenticator       $formAuthenticator
+     * @param MailerInterface              $mailer
      * @return Response
      */
     public function register(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $formAuthenticator
+        LoginFormAuthenticator $formAuthenticator,
+        MailerInterface $mailer
     ): Response
     {
         $form = $this->createForm(UserRegistrationFormType::class);
@@ -78,6 +82,14 @@ class SecurityController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+
+            /** Send an email to registered User */
+            $email = (new Email())
+                ->from('s.gopibabu@gmail.com')
+                ->to($user->getEmail())
+                ->subject('Welcome to Spacebar')
+                ->text("Nice to meet you {$user->getFirstName()}! 😀");
+            $mailer->send($email);
 
             /** Automatically login registered user */
             return $guardHandler->authenticateUserAndHandleSuccess(
