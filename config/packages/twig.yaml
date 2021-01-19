@@ -3,6 +3,7 @@ twig:
     debug: '%kernel.debug%'
     paths:
         'public/images': images
+        'public/css': styles
     strict_variables: '%kernel.debug%'
     form_themes:
         - 'bootstrap_4_layout.html.twig'
