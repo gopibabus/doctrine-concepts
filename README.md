@@ -19,7 +19,7 @@ DATABASE_URL="mysql://root:root@127.0.0.1:3306/symfony_concepts_2"
 composer update
 
 # Create Database
-php bin/console make:database
+php bin/console doctrine:database:create
 
 # Migrate data to database
 php bin/console doctrine:migrations:migrate

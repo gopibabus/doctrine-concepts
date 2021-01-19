@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\User;
-use App\Form\Model\UserRegistrationFormModel;
 use App\Form\UserRegistrationFormType;
 use App\Security\LoginFormAuthenticator;
-use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\Model\UserRegistrationFormModel;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
 {
@@ -84,11 +84,11 @@ class SecurityController extends AbstractController
             $em->flush();
 
             /** Send an email to registered User */
-            $email = (new Email())
+            $email = (new TemplatedEmail())
                 ->from('s.gopibabu@gmail.com')
                 ->to($user->getEmail())
                 ->subject('Welcome to Spacebar')
-                ->text("Nice to meet you {$user->getFirstName()}! 😀");
+            ->htmlTemplate('email/welcome.html.twig');
             $mailer->send($email);
 
             /** Automatically login registered user */
