@@ -1,3 +1,4 @@
+{% apply inline_css %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -58,7 +59,7 @@
     <div class="container">
         <div class="header text-center">
             <a href="{{ url('app_homepage') }}">
-                <img src="{{ absolute_url(asset('images/logo.png')) }}" class="logo" alt="SpaceBar Logo">
+                <img src="{{ email.image('@images/logo.png') }}" class="logo" alt="SpaceBar Logo">
             </a>
         </div>
         <div class="content">
@@ -95,3 +96,4 @@
 </div>
 </body>
 </html>
+{% endapply %}

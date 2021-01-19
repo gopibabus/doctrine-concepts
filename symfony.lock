@@ -143,6 +143,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
+    "league/html-to-markdown": {
+        "version": "4.10.0"
+    },
     "michelf/php-markdown": {
         "version": "1.8.0"
     },
@@ -286,6 +289,9 @@
     },
     "symfony/contracts": {
         "version": "v1.0.2"
+    },
+    "symfony/css-selector": {
+        "version": "v5.2.1"
     },
     "symfony/debug": {
         "version": "v4.0.2"
@@ -527,6 +533,9 @@
             "ref": "f75ac166398e107796ca94cc57fa1edaa06ec47f"
         }
     },
+    "symfony/twig-pack": {
+        "version": "v1.0.1"
+    },
     "symfony/validator": {
         "version": "4.3",
         "recipe": {
@@ -567,17 +576,14 @@
     "symfony/yaml": {
         "version": "v4.0.2"
     },
-    "twig/extensions": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a86723ee8d8b2f9437c8ce60a5546a1c267da5ed"
-        },
-        "files": [
-            "config/packages/twig_extensions.yaml"
-        ]
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.3"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.2.1"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.2.1"
     },
     "twig/twig": {
         "version": "v2.4.4"
