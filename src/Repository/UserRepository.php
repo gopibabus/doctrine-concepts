@@ -44,4 +44,12 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return array
+     */
+    public function findAllSubscribedToNewsLetter(): array
+    {
+        return $this->findAll();
+    }
 }
