@@ -3,7 +3,9 @@
 parameters:
     cache_adapter: cache.adapter.apcu
     locale: 'en'
-
+    router.request_context.schema: '%env(SITE_BASE_SCHEME)%'
+    router.request_context.host: '%env(SITE_BASE_HOST)%'
+    
 services:
     # default configuration for services in *this* file
     _defaults:
