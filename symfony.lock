@@ -146,6 +146,9 @@
     "league/html-to-markdown": {
         "version": "4.10.0"
     },
+    "lorenzo/pinky": {
+        "version": "1.0.5"
+    },
     "michelf/php-markdown": {
         "version": "1.8.0"
     },
@@ -583,6 +586,9 @@
         "version": "v3.2.1"
     },
     "twig/extra-bundle": {
+        "version": "v3.2.1"
+    },
+    "twig/inky-extra": {
         "version": "v3.2.1"
     },
     "twig/twig": {
