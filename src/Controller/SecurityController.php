@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Mailer;
 use Exception;
 use App\Entity\User;
 use App\Form\UserRegistrationFormType;
@@ -9,7 +10,6 @@ use App\Security\LoginFormAuthenticator;
 use App\Form\Model\UserRegistrationFormModel;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler    $guardHandler
      * @param LoginFormAuthenticator       $formAuthenticator
-     * @param MailerInterface              $mailer
+     * @param Mailer                       $mailer
      * @return Response
      */
     public function register(
@@ -59,7 +59,7 @@ class SecurityController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $formAuthenticator,
-        MailerInterface $mailer
+        Mailer $mailer
     ): Response
     {
         $form = $this->createForm(UserRegistrationFormType::class);
@@ -85,13 +85,7 @@ class SecurityController extends AbstractController
             $em->flush();
 
             /** Send an email to registered User */
-            $email = (new TemplatedEmail())
-                ->from(new Address('s.gopibabu@gmail.com', 'Gopibabu'))
-                ->to(new Address($user->getEmail(), 'Wonderful User'))
-                ->subject('Welcome to Spacebar')
-            ->htmlTemplate('email/welcome.html.twig')
-                ->context(['user' =>$user]);
-            $mailer->send($email);
+            $mailer->sendWelcomeMessage($user);
 
             /** Automatically login registered user */
             return $guardHandler->authenticateUserAndHandleSuccess(
