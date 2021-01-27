@@ -17,6 +17,7 @@
         <env name="SITE_BASE_HOST" value="localhost:8000" />
 
         <!-- define your env variables for the test env here -->
+        <env name="MAILER_DSN" value="null://default" />
 
         <!-- ###+ doctrine/doctrine-bundle ### -->
         <!-- Format described at http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url -->

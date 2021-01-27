@@ -56,6 +56,5 @@ class MailerTest extends kernelTestCase
         $mailer = new Mailer($symfonyMailer, $twig, $pdf);
         $email = $mailer->sendAuthorWeeklyReport($user, [$article]);
         $this->assertCount(1, $email->getAttachments());
-
     }
 }
