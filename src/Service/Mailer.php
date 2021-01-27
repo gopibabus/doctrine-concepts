@@ -21,7 +21,7 @@ class Mailer
         $this->pdf = $pdf;
     }
 
-    public function sendWelcomeMessage(User $user)
+    public function sendWelcomeMessage(User $user): TemplatedEmail
     {
         $email = (new TemplatedEmail())
             ->from(new Address('s.gopibabu@gmail.com', 'Gopibabu'))
@@ -30,9 +30,11 @@ class Mailer
             ->htmlTemplate('email/welcome.html.twig')
             ->context(['user' =>$user]);
         $this->mailer->send($email);
+
+        return $email;
     }
 
-    public function sendAuthorWeeklyReport(User $author, array $articles)
+    public function sendAuthorWeeklyReport(User $author, array $articles): TemplatedEmail
     {
         $html = $this->twig->render('email/author-weekly-report-pdf.html.twig', [
             'articles' => $articles
@@ -50,5 +52,7 @@ class Mailer
             ])
             ->attach($pdf, sprintf('weekly-report-%s.pdf', date('Y-m-d')));
         $this->mailer->send($email);
+
+        return $email;
     }
 }
