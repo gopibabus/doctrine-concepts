@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleFormType;
 use App\Repository\ArticleRepository;
+use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,7 +23,11 @@ class ArticleAdminController extends BaseController
      * @param Request                $request
      * @return Response
      */
-    public function new(EntityManagerInterface $em, Request $request)
+    public function new(
+        EntityManagerInterface $em,
+        Request $request,
+        UploaderHelper $uploaderHelper
+    ): Response
     {
         $form = $this->createForm(ArticleFormType::class);
 
@@ -30,6 +35,13 @@ class ArticleAdminController extends BaseController
         if($form->isSubmitted() && $form->isValid()){
             /** @var Article $article */
             $article = $form->getData();
+
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form['imageFile']->getData();
+            if($uploadedFile){
+                $article->setImageFilename($uploaderHelper->uploadArticleImage($uploadedFile));
+            }
+
             $em->persist($article);
             $em->flush();
 
@@ -49,9 +61,15 @@ class ArticleAdminController extends BaseController
      * @param Article                $article
      * @param Request                $request
      * @param EntityManagerInterface $em
+     * @param UploaderHelper         $uploaderHelper
      * @return Response
      */
-    public function edit(Article $article, Request $request, EntityManagerInterface $em): Response
+    public function edit(
+        Article $article,
+        Request $request,
+        EntityManagerInterface $em,
+        UploaderHelper $uploaderHelper
+    ): Response
     {
         if (!$this->isGranted('MANAGE', $article)) {
             throw $this->createAccessDeniedException('No Access!!');
@@ -66,11 +84,7 @@ class ArticleAdminController extends BaseController
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $form['imageFile']->getData();
             if($uploadedFile){
-                $destination = $this->getParameter('kernel.project_dir').'/public/uploads/article_image';
-                $originalFileName = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFileName = Urlizer::urlize($originalFileName).'-'.uniqid().'.'.$uploadedFile->guessExtension();
-                $uploadedFile->move($destination, $newFileName);
-                $article->setImageFilename($newFileName);
+                $article->setImageFilename($uploaderHelper->uploadArticleImage($uploadedFile));
             }
             $em->persist($article);
             $em->flush();
