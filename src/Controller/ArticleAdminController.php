@@ -6,7 +6,9 @@ use App\Entity\Article;
 use App\Form\ArticleFormType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,9 +63,17 @@ class ArticleAdminController extends BaseController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form['imageFile']->getData();
+            if($uploadedFile){
+                $destination = $this->getParameter('kernel.project_dir').'/public/uploads/article_image';
+                $originalFileName = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFileName = Urlizer::urlize($originalFileName).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+                $uploadedFile->move($destination, $newFileName);
+                $article->setImageFilename($newFileName);
+            }
             $em->persist($article);
             $em->flush();
-
             $this->addFlash('success', 'Article is Updated 😀');
 
             return $this->redirectToRoute('admin_article_edit', [
@@ -74,15 +84,6 @@ class ArticleAdminController extends BaseController
         return $this->render('article_admin/edit.html.twig', [
             'articleForm' => $form->createView()
         ]);
-    }
-
-    /**
-     * @Route("/admin/upload/test", name="upload_test")
-     * @param Request $request
-     */
-    public function temporaryUploadAction(Request $request)
-    {
-        dd($request->files->get('image'));
     }
 
     /**

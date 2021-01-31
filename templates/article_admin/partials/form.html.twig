@@ -4,6 +4,7 @@
     {# Render all Form Fields #}
     {# {{ form_widget(articleForm) }} #}
     {# Render individual Form Fields #}
+    {{ form_row(articleForm.imageFile) }}
     {{ form_row(articleForm.title, {label: 'Article Title'}) }}
     {{ form_row(articleForm.content) }}
     {% if articleForm.publishedAt is defined %}
