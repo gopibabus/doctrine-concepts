@@ -6,6 +6,7 @@
 * Symfony Security (Authentication & Authorization)
 * Symfony Forms
 * Symfony Mailer(Not Swift Mailer 🙅)
+* Uploading files in Symfony
 
 ### How to Set up and run the Application
 ```bash
